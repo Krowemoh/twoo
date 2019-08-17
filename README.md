@@ -7,4 +7,6 @@ Inspired by an askreddit thread that was asking what was currently going on in p
 
 Just clone the directory and view index.html in a browser. 
 
+How wonderful is this world of ours! 
+
 :)
