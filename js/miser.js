@@ -45,7 +45,7 @@ var $ = (function(){
         }   
     };
 
-    Constructor.prototype.ajax = function(object){
+    Constructor.prototype.ajaxSync = function(object){
         if(object.method === undefined) {
             object.method = "GET";
         }
@@ -73,6 +73,37 @@ var $ = (function(){
             };
             xhr.send(object.data);
         });
+    };
+
+    Constructor.prototype.ajax = function(object){
+        if(object.method === undefined) {
+            object.method = "GET";
+        }
+        if(object.data === undefined) {
+            object.data = "";
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.open(object.method, object.url);
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                if(object.success === undefined){
+                    return xhr.responseText;
+                } else {
+                    object.success(JSON.parse(xhr.responseText));
+                }
+            } else {
+                if(object.failure === undefined){
+                    return { status: this.status, statusText: xhr.statusText };
+
+                } else {
+                    object.failure({ status: this.status, statusText: xhr.statusText});
+                }
+            }
+        };
+        xhr.onerror = function () {
+            return { status: this.status, statusText: xhr.statusText };
+        };
+        xhr.send(object.data);
     };
 
     return instantiate;

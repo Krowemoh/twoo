@@ -1,16 +1,18 @@
 async function getJson(redditUrl,subreddit,listType,country)
 {
 	var subUrl = redditUrl + subreddit + listType; 
-	let response = await $().ajax({
+	$().ajax({
 		type:"GET",
     	data:{
    	    	t:"week",
 			limit:2
       	},
-        url:subUrl,
+		url:subUrl,
+		success: function(response){
+			updatePage(response,redditUrl,subreddit,country);	
+		}
 	});
-	response = JSON.parse(response);
-	updatePage(response,redditUrl,subreddit,country);	
+	
 }
 function updatePage(response,redditUrl,subreddit,country)
 {
